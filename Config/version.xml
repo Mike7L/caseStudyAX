@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<version>
+    <felgen>
+        <FelgenCode type="int" length="8"></FelgenCode>
+        <Felgenmaulweite type="float" length="8"></Felgenmaulweite>
+        <Felgenhornhoehe type="char" length="1"></Felgenhornhoehe>
+    </felgen>
+    <zeitraum>
+        <ZeitID type="int" length="8"></ZeitID>
+        <SchwackeCode type="int" length="8"></SchwackeCode>
+        <Gueltig_ab type="date" length="10"></Gueltig_ab>
+    </zeitraum>
+</version>
