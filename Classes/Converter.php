@@ -12,7 +12,7 @@ class Converter {
     *
     * @var Converter: one instance is enough
     */
-    private static $instance;
+    private static $_instance;
 
     /**
      * Creates Converter, sets all validators
@@ -30,11 +30,11 @@ class Converter {
      */
     public static function getInstance()
     {
-      if ( is_null( self::$instance ) )
+      if ( is_null( self::$_instance ) )
       {
-        self::$instance = new self();
+        self::$_instance = new self();
       }
-      return self::$instance;
+      return self::$_instance;
     }
     
     /**

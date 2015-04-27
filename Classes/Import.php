@@ -35,6 +35,7 @@ class Import
                 }
             } catch (Exception $exc) {
                 echo 'ERROR: ' .$exc->getMessage().'<br>';
+                continue;
             }
         }
     }

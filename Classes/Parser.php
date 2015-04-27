@@ -60,8 +60,8 @@ class Parser {
         fclose($file);
         fclose($fileDb);
         
-        if ($errorCount>0){
-            if ($rowCount*100/$errorCount > ERRORRATE){
+        if ($rowCount>0){
+            if ($errorCount/$rowCount > ERRORRATE/100){
                 throw new Exception( $errorCount.' errors! in '. $rowCount
                                         .' rows! Over '.ERRORRATE .'%!'
                                         .' In file '. $this->_fileName);
