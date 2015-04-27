@@ -43,7 +43,7 @@ class Converter {
      * @param string $var
      */
     private function _convertint($var) {
-        if (TRUE === $this->_validatorInt->isValid($var))  {
+        if ($this->_validatorInt->isValid($var))  {
             return intval($var);
         }
         return NULL;
@@ -54,7 +54,7 @@ class Converter {
      * @param string $var
      */
     private function _convertfloat($var) {
-        if (TRUE === $this->_validatorFloat->isValid($var))  {
+        if ($this->_validatorFloat->isValid($var))  {
             return floatval($var);
         }
         return NULL;        
@@ -65,7 +65,7 @@ class Converter {
      * @param string $var
      */
     private function _convertdate($var) {
-        if (TRUE === $this->_validatorDate->isValid($var))  {
+        if ($this->_validatorDate->isValid($var))  {
             return $var;
         }
         return NULL;  
@@ -76,7 +76,7 @@ class Converter {
      * @param string $var
      */
     private function _convertstring($var) {
-        if (TRUE === is_string($var))  {
+        if (is_string($var))  {
             return $var;
         }
         return NULL;  

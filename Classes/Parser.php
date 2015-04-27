@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Converter.php';
 
 /**
@@ -39,20 +38,35 @@ class Parser {
         $rowCount = 0;
         $errorCount = 0;
         $file = fopen($this->_fileName,"r");
+        
+        if (file_exists($this->_fileName.'_')) {
+            unlink($this->_fileName.'_');
+            }
+        $fileDb = fopen($this->_fileName.'_', "w");
+        
         while(! feof($file)) {
             $rowCount+=1;
             try {
                 $row = $this->_parseLine(fgets($file));
                 if (!is_null($row)){
-                    
+                    fwrite($fileDb, join(';',$row)."\n");
                 }
             } catch (Exception $e) {
                 $errorCount += 1;
-                echo $e->getMessage().'<br>';
+                echo $e->getMessage()."<br>";
                 continue;
             }
-          }
+        }
         fclose($file);
+        fclose($fileDb);
+        
+        if ($errorCount>0){
+            if ($rowCount*100/$errorCount > ERRORRATE){
+                throw new Exception( $errorCount.' errors! in '. $rowCount
+                                        .' rows! Over '.ERRORRATE .'%!'
+                                        .'in file '. $this->_fileName);
+            }
+        }
     }
     
     /**
@@ -60,8 +74,7 @@ class Parser {
      * @param string $line
      */
     private function _parseLine($line) {
-        echo "To parse:\"$line\"<br>";
-        
+//      echo "To parse:\"$line\"<br>";
         $row = [];
         $currentIndex = 0;
         foreach ($this->_schema['columns'] as $colName => $colSchema) {
@@ -73,9 +86,7 @@ class Parser {
             $row[$colName] = $convertedValue;
             $currentIndex += $colSchema['length'];
         }
-        
-        Zend_Debug::dump($row);
-        
+//        Zend_Debug::dump($row);
         return $row;
     }
     

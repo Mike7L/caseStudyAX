@@ -33,7 +33,7 @@
   }
 },
 "zeitraum.dat": {
-  "tableName": "felgen",
+  "tableName": "zeitraum",
   "columns": {
     "ZeitID": {
       "type": "int",
