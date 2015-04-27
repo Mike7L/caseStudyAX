@@ -3,26 +3,11 @@
  * A class with conversion and validation functions
  */
 class Converter {
-
-    private $_validatorInt;
-    private $_validatorFloat;
-    private $_validatorDate;
-
     /**
     *
     * @var Converter: one instance is enough
     */
     private static $_instance;
-
-    /**
-     * Creates Converter, sets all validators
-     */
-    private function __construct()
-    {
-//        $this->_validatorInt = new Zend_Validate_Int();
-//        $this->_validatorFloat = new Zend_Validate_Float(array('locale' => 'us'));
-//        $this->_validatorDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy', 'locale' => 'de'));
-    }
 
     /**
      * Returns an instance, if there is no instance created yet, creates one

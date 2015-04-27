@@ -18,7 +18,8 @@ class Config {
      */
     private function __construct()
     {
-        $this->settings = new Zend_Config_INI('../Config/config.ini');
+        //$this->settings = new Zend_Config_INI(realpath( dirname( __FILE__ ) ).'/../Config/settings.ini');
+        $this->settings = new Zend_Config_INI(dirname(__FILE__)  . '../Config/config.ini');
     }
 
     /**
