@@ -17,9 +17,7 @@ class Version
     public function __construct($versionFile) {
         $versionXML = new Zend_Config_XML($versionFile);
         $this->_versionData = $versionXML->toArray();
-        echo '<pre>';
-        print_r($this->_versionData);
-        echo '</pre>';
+        //Zend_Debug::dump($this->_versionData);
     }
 
     /**
@@ -28,12 +26,9 @@ class Version
      * @return array schema
      */
     public function getSchema($schemaName) {
-        foreach ($this->_versionData['files'] as $schema) {
-            if ($schema['name'] == $schemaName) {
-                echo 'YEAAAH';
-                return $schema;
-            }
-        }
+        if (array_key_exists($schemaName, $this->_versionData)) {
+            return $this->_versionData[$schemaName];
+        } 
         return NULL;
     }
 

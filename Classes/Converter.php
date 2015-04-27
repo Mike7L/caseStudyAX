@@ -19,9 +19,9 @@ class Converter {
      */
     private function __construct()
     {
-        $this->_validatorInt =  new Zend_Validate_Int();
-        $this->_validatorFloat =  new Zend_Validate_Float();
-        $this->_validatorDate =  new Zend_Validate_Date();
+        $this->_validatorInt = new Zend_Validate_Int();
+        $this->_validatorFloat = new Zend_Validate_Float(array('locale' => 'us'));
+        $this->_validatorDate = new Zend_Validate_Date();
                 
     }
 
@@ -43,7 +43,7 @@ class Converter {
      * @param string $var
      */
     private function _convertint($var) {
-        if ($this->_validatorInt->isValid($var))  {
+        if (TRUE === $this->_validatorInt->isValid($var))  {
             return intval($var);
         }
         return NULL;
@@ -54,7 +54,7 @@ class Converter {
      * @param string $var
      */
     private function _convertfloat($var) {
-        if ($this->_validatorFloat->isValid($var))  {
+        if (TRUE === $this->_validatorFloat->isValid($var))  {
             return floatval($var);
         }
         return NULL;        
@@ -66,7 +66,7 @@ class Converter {
      * @param string $var
      */
     private function _convertdate($var) {
-        if ($this->_validatorDate->isValid($var))  {
+        if (TRUE === $this->_validatorDate->isValid($var))  {
             return date('dd.MM.yyyy',$var);
         }
         return NULL;  
@@ -77,7 +77,7 @@ class Converter {
      * @param string $var
      */
     private function _convertstring($var) {
-        if (is_string($var))  {
+        if (TRUE === is_string($var))  {
             return $var;
         }
         return NULL;  
@@ -109,14 +109,14 @@ class Converter {
                     return $col;
                 }
             }
-            throw new Exception('Value '.$col. 'is not allowed in'. $colSchema);
+            throw new Exception('Value -'.$col. '- is not allowed');
         }
         
         $convertFunction = '_convert' .$colSchema['type'];
         $value = $this->$convertFunction($col);
         
         if (is_null($value)) {
-            throw new Exception('Value '.$col. 'has wrong type'. $colSchema);
+            throw new Exception('Unable to convert -'.$col. '- to '. $colSchema['type']);
         }
         return $value;
     }

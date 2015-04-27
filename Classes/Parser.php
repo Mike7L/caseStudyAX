@@ -23,7 +23,7 @@ class Parser {
     public function __construct($schema, $fileName) {
         $this->_schema = $schema;
         $this->_fileName = $fileName;
-        Zend_Debug::dump($schema);
+       // Zend_Debug::dump($schema);
     }
     
     /**
@@ -31,10 +31,16 @@ class Parser {
      * Main method
      */
     public function parse() {
+        $errorCount = 0;
         $file = fopen($this->_fileName,"r");
         while(! feof($file)) {
-            $this->_parseLine(fgets($file));
-            break;
+            try {
+                $this->_parseLine(fgets($file));
+            } catch (Exception $e) {
+                $errorCount += 1;
+                echo $e->getMessage();
+                continue;
+            }
           }
         fclose($file);
     }
@@ -48,13 +54,12 @@ class Parser {
         $row = [];
         $currentIndex = 0;
         foreach ($this->_schema['columns'] as $colName => $colSchema) {
-            $value = substr($line, $currentIndex,$colSchema['length']);
+            $value = trim(substr($line, $currentIndex,$colSchema['length']));
             $currentIndex += $colSchema['length'];
-            Zend_Debug::dump($colSchema);
             $row[$colName] = Converter::getInstance()->convert($value, $colSchema);
         }
         
-        echo join(";", $row);
+        Zend_Debug::dump($row);
         
         return $row;
     }
