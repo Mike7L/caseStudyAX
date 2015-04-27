@@ -15,8 +15,9 @@ class Version
      * @param string $versionFile Filename with information about schemas
      */
     public function __construct($versionFile) {
-        $versionXML = new Zend_Config_XML($versionFile);
-        $this->_versionData = $versionXML->toArray();
+        //$versionXML = new Zend_Config_XML($versionFile.'.xml');
+        $versionJSON = new Zend_Config_JSON($versionFile.'.json');
+        $this->_versionData = $versionJSON->toArray();
         //Zend_Debug::dump($this->_versionData);
     }
 

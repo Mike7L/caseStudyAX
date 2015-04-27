@@ -21,7 +21,7 @@ class Converter {
     {
         $this->_validatorInt = new Zend_Validate_Int();
         $this->_validatorFloat = new Zend_Validate_Float(array('locale' => 'us'));
-        $this->_validatorDate = new Zend_Validate_Date();
+        $this->_validatorDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy', 'locale' => 'de'));
                 
     }
 
@@ -60,14 +60,13 @@ class Converter {
         return NULL;        
     }
     
-    
     /**
      * Validates and Converts $var to Date
      * @param string $var
      */
     private function _convertdate($var) {
         if (TRUE === $this->_validatorDate->isValid($var))  {
-            return date('dd.MM.yyyy',$var);
+            return $var;
         }
         return NULL;  
     }
@@ -83,7 +82,6 @@ class Converter {
         return NULL;  
     }
 
-
     /**
      * Main function. Checks that $col matches the $colSchema and converts it
      * @param string $col Value to convert
@@ -91,9 +89,8 @@ class Converter {
      * @return string converted value of the column or null
      */
     public function convert($col, $colSchema) {
-        
-        
-        //ignoreValues - these values are always accepted
+        //ignoreValues - these values are always accepted, without checking
+        // 
         if (array_key_exists('ignoreValues', $colSchema)) {
             foreach ($colSchema['ignoreValues'] as $ignoreValue) {
                 if ($col == $ignoreValue){
@@ -101,7 +98,6 @@ class Converter {
                 }
             }
         }
-        
         //allowedValues - list of possible values, all others are wrong
         if (array_key_exists('allowedValues', $colSchema)) {
             foreach ($colSchema['allowedValues'] as $allowedValue) {
@@ -109,14 +105,15 @@ class Converter {
                     return $col;
                 }
             }
-            throw new Exception('Value -'.$col. '- is not allowed');
+            throw new Exception('Value "'.$col. '" is not allowed');
         }
         
+        //decides which convert function will be used
         $convertFunction = '_convert' .$colSchema['type'];
         $value = $this->$convertFunction($col);
         
         if (is_null($value)) {
-            throw new Exception('Unable to convert -'.$col. '- to '. $colSchema['type']);
+            throw new Exception('"'.$col. '" is not a valid '. $colSchema['type']);
         }
         return $value;
     }

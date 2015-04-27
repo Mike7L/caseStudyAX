@@ -13,6 +13,11 @@ class Parser {
      * @var array 
      */
     private $_schema = '';
+    
+    /**
+     * Name of the file this parser was created for
+     * @var string 
+     */
     private $_fileName = '';
 
     /**
@@ -23,7 +28,7 @@ class Parser {
     public function __construct($schema, $fileName) {
         $this->_schema = $schema;
         $this->_fileName = $fileName;
-       // Zend_Debug::dump($schema);
+        Zend_Debug::dump($schema);
     }
     
     /**
@@ -31,14 +36,19 @@ class Parser {
      * Main method
      */
     public function parse() {
+        $rowCount = 0;
         $errorCount = 0;
         $file = fopen($this->_fileName,"r");
         while(! feof($file)) {
+            $rowCount+=1;
             try {
-                $this->_parseLine(fgets($file));
+                $row = $this->_parseLine(fgets($file));
+                if (!is_null($row)){
+                    
+                }
             } catch (Exception $e) {
                 $errorCount += 1;
-                echo $e->getMessage();
+                echo $e->getMessage().'<br>';
                 continue;
             }
           }
@@ -50,13 +60,18 @@ class Parser {
      * @param string $line
      */
     private function _parseLine($line) {
-        Zend_Debug::dump($line);
+        echo "To parse:\"$line\"<br>";
+        
         $row = [];
         $currentIndex = 0;
         foreach ($this->_schema['columns'] as $colName => $colSchema) {
             $value = trim(substr($line, $currentIndex,$colSchema['length']));
+            $convertedValue = Converter::getInstance()->convert($value, $colSchema);
+            if (is_null($convertedValue)) {
+                return NULL;
+            }
+            $row[$colName] = $convertedValue;
             $currentIndex += $colSchema['length'];
-            $row[$colName] = Converter::getInstance()->convert($value, $colSchema);
         }
         
         Zend_Debug::dump($row);

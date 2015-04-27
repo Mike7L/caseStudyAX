@@ -1,0 +1,59 @@
+{
+"felgen.dat": {
+  "tableName": "felgen",
+  "columns": {
+    "FelgenCode": {
+      "type": "int",
+      "length": "5"
+    },
+    "Felgenmaulweite": {
+      "type": "float",
+      "length": "5"
+    },
+    "Felgenhornhoehe": {
+      "type": "string",
+      "length": "1"
+    },
+    "Eintelige_Felge": {
+      "type": "string",
+      "length": "1"
+    },
+    "Felgedurchmesser": {
+      "type": "int",
+      "length": "2"
+    },
+    "Material": {
+      "type": "string",
+      "length": "1",
+      "allowedValues": [
+        "S",
+        "L"
+      ]
+    }
+  }
+},
+"zeitraum.dat": {
+  "tableName": "felgen",
+  "columns": {
+    "ZeitID": {
+      "type": "int",
+      "length": "8"
+    },
+    "SchwackeCode": {
+      "type": "int",
+      "length": "8"
+    },
+    "Gueltig_ab": {
+      "type": "date",
+      "length": "10"
+    },
+    "Gueltig_bis": {
+      "type": "date",
+      "length": "10",
+      "ignoreValues": [
+        "00.00.0000"
+      ]
+    }
+  }
+}
+}
