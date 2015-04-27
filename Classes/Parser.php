@@ -27,7 +27,7 @@ class Parser {
     public function __construct($schema, $fileName) {
         $this->_schema = $schema;
         $this->_fileName = $fileName;
-        Zend_Debug::dump($schema);
+        //Zend_Debug::dump($schema);
     }
     
     /**
@@ -49,11 +49,11 @@ class Parser {
             try {
                 $row = $this->_parseLine(fgets($file));
                 if (!is_null($row)){
-                    fwrite($fileDb, join(';',$row)."\n");
+                    //fwrite($fileDb, join(';',$row)."\n");
                 }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
                 $errorCount += 1;
-                echo $e->getMessage()."<br>";
+                echo 'ERROR: ' .$exc->getMessage().'<br>';
                 continue;
             }
         }

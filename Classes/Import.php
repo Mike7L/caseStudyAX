@@ -28,10 +28,14 @@ class Import
     public function start() {
         $fileNames = glob('Data/*.dat', GLOB_BRACE);
         foreach($fileNames as $fileName) {
-           $parser = $this->_getParser($fileName);
-           if (!is_null($parser)){
-               $parser->parse();
-           }
+            try {
+                $parser = $this->_getParser($fileName);
+                if (!is_null($parser)){
+                    $parser->parse();
+                }
+            } catch (Exception $exc) {
+                echo 'ERROR: ' .$exc->getMessage().'<br>';
+            }
         }
     }
 

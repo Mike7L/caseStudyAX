@@ -1,5 +1,5 @@
 {
-"felgen.dat": {
+"felgen100.dat": {
   "tableName": "felgen",
   "columns": {
     "FelgenCode": {
@@ -32,7 +32,7 @@
     }
   }
 },
-"zeitraum.dat": {
+"zeitraum100.dat": {
   "tableName": "zeitraum",
   "columns": {
     "ZeitID": {

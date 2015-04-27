@@ -16,8 +16,8 @@ $version = new Version('Config\version');
 $import = new Import($version);
 try {
     $import->start();
-} catch (Exception $e) {
-    echo $e->getMessage()."<br>";
+} catch (Exception $exc) {
+    echo 'ERROR: ' .$exc->getMessage().'<br>';
 }
 
 
