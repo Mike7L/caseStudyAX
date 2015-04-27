@@ -19,10 +19,9 @@ class Converter {
      */
     private function __construct()
     {
-        $this->_validatorInt = new Zend_Validate_Int();
-        $this->_validatorFloat = new Zend_Validate_Float(array('locale' => 'us'));
-        $this->_validatorDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy', 'locale' => 'de'));
-                
+//        $this->_validatorInt = new Zend_Validate_Int();
+//        $this->_validatorFloat = new Zend_Validate_Float(array('locale' => 'us'));
+//        $this->_validatorDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy', 'locale' => 'de'));
     }
 
     /**
@@ -43,7 +42,7 @@ class Converter {
      * @param string $var
      */
     private function _convertint($var) {
-        if ($this->_validatorInt->isValid($var))  {
+        if (is_numeric($var) && (intval($var)==$var))  {
             return intval($var);
         }
         return NULL;
@@ -54,7 +53,7 @@ class Converter {
      * @param string $var
      */
     private function _convertfloat($var) {
-        if ($this->_validatorFloat->isValid($var))  {
+        if (is_numeric($var))  {
             return floatval($var);
         }
         return NULL;        
@@ -65,7 +64,9 @@ class Converter {
      * @param string $var
      */
     private function _convertdate($var) {
-        if ($this->_validatorDate->isValid($var))  {
+        
+        $d = DateTime::createFromFormat('d.m.Y', $var);
+        if ($d && $d->format('d.m.Y') == $var)  {
             return $var;
         }
         return NULL;  

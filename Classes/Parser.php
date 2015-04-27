@@ -64,7 +64,7 @@ class Parser {
             if ($rowCount*100/$errorCount > ERRORRATE){
                 throw new Exception( $errorCount.' errors! in '. $rowCount
                                         .' rows! Over '.ERRORRATE .'%!'
-                                        .'in file '. $this->_fileName);
+                                        .' In file '. $this->_fileName);
             }
         }
     }
