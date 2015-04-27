@@ -1,13 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <version>
-    <felgen>
-        <FelgenCode type="int" length="8"></FelgenCode>
-        <Felgenmaulweite type="float" length="8"></Felgenmaulweite>
-        <Felgenhornhoehe type="char" length="1"></Felgenhornhoehe>
-    </felgen>
-    <zeitraum>
-        <ZeitID type="int" length="8"></ZeitID>
-        <SchwackeCode type="int" length="8"></SchwackeCode>
-        <Gueltig_ab type="date" length="10"></Gueltig_ab>
-    </zeitraum>
+    <files>
+        <file>
+            <name>felgen.dat</name>
+            <tableName>felgen</tableName>
+            <columns>
+                <column name="FelgenCode" type="int" length="5"></column>
+                <column name="Felgenmaulweite" type="float" length="5"></column>
+                <column name="Felgenhornhoehe" type="string" length="1"></column>
+                <column name="Eintelige_Felge" type="string" length="1"></column>
+                <column name="Felgedurchmesser" type="int" length="2"></column>
+                <column name="Material" type="string" length="1">
+                    <allowedValues>
+                        <allowedValue>S</allowedValue>
+                        <allowedValue>L</allowedValue>
+                    </allowedValues>
+                </column>
+            </columns>
+        </file>
+        <file name="zeitraum.dat" tableName="zeitraum">
+            <columns>
+                <column name="ZeitID" type="int" length="8"></column>
+                <column name="SchwackeCode" type="int" length="8"></column>
+                <column name="Gueltig_ab" type="date" length="10"></column>
+                <column name="Gueltig_bis" type="date" length="10">
+                    <ignoreValues>
+                    <ignoreValue>00.00.0000</ignoreValue>
+                    </ignoreValues>
+                </column>
+            </columns>
+        </file>
+    </files>
 </version>
