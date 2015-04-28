@@ -1,6 +1,6 @@
 {
-"felgen.dat": {
-  "tableName100": "felgen",
+"felgen100.dat": {
+  "tableName": "felgen",
   "columns": {
     "FelgenCode": {
       "type": "int",

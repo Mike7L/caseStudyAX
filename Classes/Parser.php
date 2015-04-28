@@ -30,6 +30,14 @@ class Parser {
         //Zend_Debug::dump($schema);
     }
     
+    public function getImportFileName() {
+        return $this->_fileName.'_';
+    }
+    
+    public function getTableName() {
+        return $this->_schema['tableName'];
+    }
+    
     /**
      * Parses a file, which this parser is created for using the scheme
      * Main method
@@ -39,17 +47,17 @@ class Parser {
         $errorCount = 0;
         $file = fopen($this->_fileName,"r");
         
-        if (file_exists($this->_fileName.'_')) {
-            unlink($this->_fileName.'_');
+        if (file_exists($this->getImportFileName())) {
+            unlink($this->getImportFileName());
             }
-        $fileDb = fopen($this->_fileName.'_', "w");
+        $fileDb = fopen($this->getImportFileName(), "w");
         
         while(! feof($file)) {
             $rowCount+=1;
             try {
                 $row = $this->_parseLine(fgets($file));
                 if (!is_null($row)){
-                    //fwrite($fileDb, join(';',$row)."\n");
+                    fwrite($fileDb, join(';',$row)."\n");
                 }
             } catch (Exception $exc) {
                 $errorCount += 1;
@@ -61,10 +69,12 @@ class Parser {
         fclose($fileDb);
         
         if ($rowCount>0){
-            if ($errorCount/$rowCount > ERRORRATE/100){
-                throw new Exception( $errorCount.' errors! in '. $rowCount
-                                        .' rows! Over '.ERRORRATE .'%!'
-                                        .' In file '. $this->_fileName);
+            if ($errorCount*100/$rowCount > Config::getInstance()->settings['main']['errorRate']){
+                unlink($this->getImportFileName());
+                throw new Exception( 'Error rate limit exceeded.'.
+                                    ' Error count:' .$errorCount.
+                                    '. Row count:' .$rowCount.
+                                    '. Filename:'. basename($this->_fileName));
             }
         }
     }

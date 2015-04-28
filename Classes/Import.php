@@ -10,14 +10,16 @@ class Import
      * Holds information about schemas for current import
      * @var Version 
      */
-    private $_version = '';
+    private $_version;
+    private $_database;
 
     /**
      * Creates Import
      * @param Version $version
      */
-    public function __construct($version) {
+    public function __construct($version, $database) {
         $this->_version = $version;
+        $this->_database = $database;
     }
     
     
@@ -26,12 +28,15 @@ class Import
      * and feeds them to the parsers.
      */
     public function start() {
-        $fileNames = glob('Data/*.dat', GLOB_BRACE);
+        $fileNames = glob(APP_ROOT.'Data/*.dat', GLOB_BRACE);
         foreach($fileNames as $fileName) {
             try {
                 $parser = $this->_getParser($fileName);
                 if (!is_null($parser)){
-                    $parser->parse();
+                    $fileName = $parser->parse();
+                    $this->_database->importFile($parser->getImportFileName(),
+                                                 $parser->getTableName());
+                    //unlink($parser->getImportFileName());
                 }
             } catch (Exception $exc) {
                 echo 'ERROR: ' .$exc->getMessage().'<br>';
@@ -39,7 +44,6 @@ class Import
             }
         }
     }
-
     /**
      * Returns parser according to $fileName
      * @param string $fileName
