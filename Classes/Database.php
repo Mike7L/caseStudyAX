@@ -15,7 +15,6 @@ class Database {
      */
     public function __construct() {
         
-        var_dump(Config::getInstance()->settings);
         $this->_conn=mysqli_connect(
                             Config::getInstance()->settings['database']['host'],
                             Config::getInstance()->settings['database']['username'],
@@ -59,7 +58,7 @@ class Database {
         $oldRowCount = $this->_getRowCount($tableName);
         $this->_truncateTable($tableName);
         
-        $sql = "LOAD DATA INFILE '".str_replace('\\', '/', $fileName)."'
+        $sql = "LOAD DATA LOCAL INFILE '".str_replace('\\', '/', $fileName)."'
                 INTO TABLE ".$tableName."
                 FIELDS TERMINATED BY ';'
                 LINES TERMINATED BY '\\n'";

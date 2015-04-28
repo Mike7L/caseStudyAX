@@ -46,7 +46,7 @@ class Import
                     $this->_database->importFile($parser->getImportFileName(),
                                                  $parser->getTableName());
                     //remove both original and import file
-                    //unlink($parser->getImportFileName());
+                    unlink($parser->getImportFileName());
                     //unlink($fileName);
                 }
             } catch (Exception $exc) {
