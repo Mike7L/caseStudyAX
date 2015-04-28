@@ -52,7 +52,7 @@ class Converter {
         
         $d = DateTime::createFromFormat('d.m.Y', $var);
         if ($d && $d->format('d.m.Y') == $var)  {
-            return $var;
+            return $d->format('Y-m-d');
         }
         return NULL;  
     }

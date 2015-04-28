@@ -1,9 +1,12 @@
 <?php
 /**
- * DatabaseClass
+ * DatabaseClass 
  */
 class Database {
     
+    /**
+     * @var database connection 
+     */
     private $_conn;
 
 
@@ -24,38 +27,57 @@ class Database {
         }
     }
     
+    /**
+     * Gests row count in given table
+     * @param string $tableName
+     * @return int
+     */
     private function _getRowCount($tableName) {
         if ( $rs = $this->_conn->query('SELECT COUNT(*) FROM '.$tableName) ) {
             $r = $rs->fetch_array();
-            $rs->free();
             return $r[0];
     }
         return NULL;
     }
     
+    /**
+     * Truncates given table
+     * @param string $tableName
+     */
+    private function _truncateTable($tableName) {
+        $this->_conn->query('TRUNCATE '.$tableName);
+    }
+    
+    /**
+     * Imports temporary file $fileName into table $tableName
+     * @param string $fileName
+     * @param string $tableName
+     */
     public function importFile($fileName, $tableName)
     {
         $oldRowCount = $this->_getRowCount($tableName);
-        echo "oldRowCount: $oldRowCount<br>";
+        $this->_truncateTable($tableName);
         
-        //$fileName = str_replace('\\', '\\\\', $fileName);
-        
-        $sql = "LOAD DATA LOCAL INFILE '".$fileName."'
+        $sql = "LOAD DATA INFILE '".str_replace('\\', '/', $fileName)."'
                 INTO TABLE ".$tableName."
                 FIELDS TERMINATED BY ';'
                 LINES TERMINATED BY '\\n'";
         
-        echo $sql;
+        mysqli_query($this->_conn, $sql);
+        $newRowCount = mysqli_affected_rows($this->_conn);
         
-        $result = mysqli_query($this->_conn, $sql);
-
-        if (mysqli_affected_rows($this->_conn) == 1) {
-          $message = "The data was successfully added!";
-        } else {
-          $message = "The user update failed: ";
-          $message .= mysqli_error($this->_conn); 
-        }
+        //We become all data every tyme, so
+        //the differences are actually new records
+        Logger::getInstance()->reportInsert($newRowCount - $oldRowCount);
+        Logger::getInstance()->reportUpdate($oldRowCount);
+    }
+    
+    public function writeProtocol() {
+        $stats = Logger::getInstance()->getStats();
         
-        echo $message;
+        $sql = "INSERT INTO protokoll (startTime, endTime, inserts, updates, errors) ".
+                "VALUES (\"".$stats['start']."\",NOW(),".$stats['inserts'].",".
+                $stats['updates'].",".$stats['errors'].")";
+        mysqli_query($this->_conn, $sql);
     }
 }

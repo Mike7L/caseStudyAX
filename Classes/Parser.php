@@ -30,10 +30,18 @@ class Parser {
         //Zend_Debug::dump($schema);
     }
     
+    /**
+     * Returns name of temporary file
+     * @return string
+     */
     public function getImportFileName() {
         return $this->_fileName.'_';
     }
     
+    /**
+     * Returns name of the table for this schema
+     * @return string 
+     */
     public function getTableName() {
         return $this->_schema['tableName'];
     }
@@ -46,7 +54,7 @@ class Parser {
         $rowCount = 0;
         $errorCount = 0;
         $file = fopen($this->_fileName,"r");
-        
+        //Create a temporary
         if (file_exists($this->getImportFileName())) {
             unlink($this->getImportFileName());
             }
@@ -61,7 +69,7 @@ class Parser {
                 }
             } catch (Exception $exc) {
                 $errorCount += 1;
-                echo 'ERROR: ' .$exc->getMessage().'<br>';
+                Logger::getInstance()->reportError($exc);
                 continue;
             }
         }
@@ -81,10 +89,10 @@ class Parser {
     
     /**
      * Parses single line using scheme
-     * @param string $line
+     * @param string $line line, that schould be parsed
+     * @return array Array with parsed fields
      */
     private function _parseLine($line) {
-//      echo "To parse:\"$line\"<br>";
         $row = [];
         $currentIndex = 0;
         foreach ($this->_schema['columns'] as $colName => $colSchema) {
@@ -96,7 +104,6 @@ class Parser {
             $row[$colName] = $convertedValue;
             $currentIndex += $colSchema['length'];
         }
-//        Zend_Debug::dump($row);
         return $row;
     }
     

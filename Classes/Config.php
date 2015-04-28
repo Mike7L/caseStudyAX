@@ -10,7 +10,10 @@ class Config {
     */
     private static $_instance;
     
-    
+    /**
+     * Application settings. Public acces
+     * @var array 
+     */
     public $settings;
 
     /**
@@ -20,7 +23,6 @@ class Config {
     {
          $settingsINI = new Zend_Config_INI(dirname(__FILE__).'/../Config/settings.ini');
          $this->settings = $settingsINI->toArray();
-         Zend_Debug::dump($this->settings);
     }
 
     /**
