@@ -1,6 +1,6 @@
 <?php
 /**
- * DatabaseClass 
+ * DatabaseClass for all database operations
  */
 class Database {
     
@@ -9,12 +9,13 @@ class Database {
      */
     private $_conn;
 
-
     /**
      * Creates database connection
      * @param Version $version
      */
     public function __construct() {
+        
+        var_dump(Config::getInstance()->settings);
         $this->_conn=mysqli_connect(
                             Config::getInstance()->settings['database']['host'],
                             Config::getInstance()->settings['database']['username'],

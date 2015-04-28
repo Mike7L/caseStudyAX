@@ -8,17 +8,15 @@ class Version
      * Holds information about schemas
      * @var array 
      */
-    private $_versionData = '';
+    private $_versionData;
     
     /**
      * Creates Version 
      * @param string $versionFile Filename with information about schemas
      */
     public function __construct($versionFile) {
-        //$versionXML = new Zend_Config_XML($versionFile.'.xml');
-        $versionJSON = new Zend_Config_JSON($versionFile.'.json');
-        $this->_versionData = $versionJSON->toArray();
-        //Zend_Debug::dump($this->_versionData);
+        $jsondata = file_get_contents(APP_ROOT.'Config/version.json');
+        $this->_versionData = json_decode($jsondata, true);
     }
 
     /**

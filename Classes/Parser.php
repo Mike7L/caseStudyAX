@@ -3,7 +3,7 @@ require_once 'Converter.php';
 
 /**
  * Checks the file for errors and parses it depending on schema
- *
+ * creates a temp file for importing
  */
 class Parser {
 
@@ -27,7 +27,6 @@ class Parser {
     public function __construct($schema, $fileName) {
         $this->_schema = $schema;
         $this->_fileName = $fileName;
-        //Zend_Debug::dump($schema);
     }
     
     /**
@@ -54,7 +53,7 @@ class Parser {
         $rowCount = 0;
         $errorCount = 0;
         $file = fopen($this->_fileName,"r");
-        //Create a temporary
+        //Create a temporary file
         if (file_exists($this->getImportFileName())) {
             unlink($this->getImportFileName());
             }

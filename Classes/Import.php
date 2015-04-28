@@ -12,6 +12,11 @@ class Import
      * @var Version 
      */
     private $_version;
+    
+    /**
+     *
+     * @var Database object
+     */
     private $_database;
 
     /**
@@ -48,7 +53,6 @@ class Import
                 $logger->reportCriticalError($exc);
                 continue;
             }
-            
         }
         $this->_database->writeProtocol();     
     }

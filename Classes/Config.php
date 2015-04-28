@@ -1,18 +1,16 @@
 <?php
 /**
- * Description of Config
+ * Config holds configuration for the Application
  */
 class Config {
 
     /**
-    *
     * @var Config: one instance is enough
     */
     private static $_instance;
     
     /**
-     * Application settings. Public acces
-     * @var array 
+     * @var array Application settings
      */
     public $settings;
 
@@ -21,8 +19,7 @@ class Config {
      */
     private function __construct()
     {
-         $settingsINI = new Zend_Config_INI(dirname(__FILE__).'/../Config/settings.ini');
-         $this->settings = $settingsINI->toArray();
+        $this->settings = parse_ini_file(APP_ROOT.'Config/settings.ini', true);
     }
 
     /**

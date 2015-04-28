@@ -87,14 +87,15 @@ class Logger {
      */
     public function reportCriticalError($error)
     {
-        $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com');
-        Zend_Mail::setDefaultTransport($transport);
-        $mail = new Zend_Mail();
-        $mail->addTo('admin@casestudy.com');
+        $to      = 'admin@casestudy.com';
+        $subject = 'Error';
+        $message = $error->getMessage();
+        $headers = 'From: me@me.com' . "\r\n" .
+            'Reply-To: me@me.com' . "\r\n";
 
-        $mail->setSubject("Error");
-        $mail->setBodyText($error->getMessage());
+        //mail($to, $subject, $message, $headers);
         
+        echo 'Email sent... Message:'.$message."<br>";
         //the Email would be sent if we had proper settings
         //$mail->send($transport);
     }
